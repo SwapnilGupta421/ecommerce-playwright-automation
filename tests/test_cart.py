@@ -3,7 +3,7 @@ from playwright.sync_api import Page, expect
 from pages.cart_page import CartPage
 from pages.product_page import ProductsPage
 
-@pytest.mark.skip
+@pytest.mark.smoke
 def test_cart_items(login_page):
     login_page.open()
     login_page.login("standard_user","secret_sauce")
@@ -19,7 +19,7 @@ def test_cart_items(login_page):
 
     assert "Sauce Labs Backpack" in cart_page.get_cart_item_names()
 
-
+@pytest.mark.regression
 def test_cart_add_all_items(login_page):
         login_page.open()
         login_page.login("standard_user", "secret_sauce")
@@ -33,11 +33,11 @@ def test_cart_add_all_items(login_page):
 
         cart_names=cart_page.get_cart_item_names()
 
-        assert cart_page.get_cart_item_count() == 6
+        assert cart_page.get_cart_item_count() == len(products_names)
 
         assert products_names == cart_names
 
-
+@pytest.mark.regression
 @pytest.mark.parametrize("index", [2, 4])
 def test_cart_remove_by_index(login_page,index):
       login_page.open()
@@ -59,7 +59,7 @@ def test_cart_remove_by_index(login_page,index):
 
       assert cart_names == products_names
 
-
+@pytest.mark.regression
 @pytest.mark.parametrize("item_name", ['Sauce Labs Bolt T-Shirt'])
 def test_cart_removed_by_name(login_page, item_name):
         login_page.open()
@@ -76,7 +76,7 @@ def test_cart_removed_by_name(login_page, item_name):
         print("products_names",products_names)
         assert cart_names == products_names
 
-@pytest.mark.skip
+@pytest.mark.regression
 @pytest.mark.parametrize(
     "item_names",
     [
@@ -109,7 +109,7 @@ def test_cart_total_matches_selected_product_prices(login_page,item_names):
        actual_total=sum(cart_page.get_cart_item_prices())
        assert actual_total == expected_total
 
-@pytest.mark.skip
+@pytest.mark.regression
 @pytest.mark.parametrize(
     "item_names",
     [

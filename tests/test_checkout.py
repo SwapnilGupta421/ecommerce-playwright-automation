@@ -4,6 +4,8 @@ from pages.cart_page import CartPage
 from pages.checkout_page import CheckoutInformationPage, CheckoutOverviewPage,CheckoutCompletePage
 from playwright.sync_api import Page, expect
 
+@pytest.mark.smoke
+@pytest.mark.regression
 @pytest.mark.parametrize("first_name,last_name,code",[("Sweety","Gupta","474001"),("Swapnil","Gupta","560091")])
 def test_form_validation_on_checkout(login_page,first_name,last_name,code):
     login_page.open()
@@ -28,7 +30,7 @@ def test_form_validation_on_checkout(login_page,first_name,last_name,code):
     print("\n")
     print("======================================")
 
-    expect(Chkout_page.get_page_title()).to_have_text("Checkout: Your Information")
+    assert Chkout_page.get_page_title() == "Checkout: Your Information"
 
     print(f"First Name | Expected: {first_name} | Actual: {actual_firstname}")
     print(f"Last Name  | Expected: {last_name} | Actual: {actual_lastname}")
@@ -47,8 +49,8 @@ def test_form_validation_on_checkout(login_page,first_name,last_name,code):
     assert actual_zipcode == code, (
     f"Code FAILED | Expected: {code} | Actual: {actual_zipcode}"
     )
-
-
+@pytest.mark.smoke
+@pytest.mark.regression
 def test_checkout_overview_page_validation(login_page):
         login_page.open()
         login_page.login("standard_user","secret_sauce")
@@ -67,13 +69,17 @@ def test_checkout_overview_page_validation(login_page):
         checkout_page1.update_zipcode("123456789")
         checkout_page1.click_on_continue()
 
-        assert checkout_page1.get_page_title()=="Checkout: Overview"
+        checkout_page2=CheckoutOverviewPage(checkout_page1.page)
+
+        checkout_page2.wait_for_page()
+
+        assert checkout_page2.get_page_title()=="Checkout: Overview"
 
         expect(checkout_page1.page).to_have_url(
             "https://www.saucedemo.com/checkout-step-two.html"
             )
 
-        checkout_page2=CheckoutOverviewPage(checkout_page1.page)
+        
 
         assert checkout_page2.get_payment_label()=="Payment Information:"
         expect(checkout_page2.payment_info_value).to_contain_text("SauceCard #")
@@ -91,7 +97,8 @@ def test_checkout_overview_page_validation(login_page):
 
         expect(checkout_page2.page).to_have_url("https://www.saucedemo.com/checkout-complete.html")
 
-
+@pytest.mark.smoke
+@pytest.mark.regression
 def test_checkout_complete_page_validation(login_page):
         login_page.open()
         login_page.login("standard_user","secret_sauce")

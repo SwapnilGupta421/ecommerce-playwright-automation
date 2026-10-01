@@ -1,4 +1,4 @@
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
 
 class CartPage:
 
@@ -12,6 +12,7 @@ class CartPage:
         self.page_title = page.locator(".title")
 
     def get_cart_item_count(self):
+     expect(self.cart_items.first).to_be_visible()
      return self.cart_items.count()
 
     def get_cart_item_names(self):

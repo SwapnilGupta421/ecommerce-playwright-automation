@@ -1,4 +1,4 @@
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
 
 
 class CheckoutInformationPage:
@@ -52,6 +52,7 @@ class CheckoutOverviewPage:
               self.tax=page.locator('[data-test="tax-label"]')
               self.total_with_tax=page.locator('[data-test="total-label"]')
               self.finish_btn=page.locator('#finish')
+              self.page_title=page.locator(".title")
 
 
        def get_payment_label(self):
@@ -80,6 +81,12 @@ class CheckoutOverviewPage:
 
        def click_on_finish_btton(self):
               return self.finish_btn.click()
+
+       def get_page_title(self):
+                  return self.page_title.inner_text()
+
+       def wait_for_page(self):
+        expect(self.page_title).to_have_text("Checkout: Overview")
 
 
 

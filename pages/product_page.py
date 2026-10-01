@@ -1,4 +1,4 @@
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
 
 
 class ProductsPage:
@@ -35,6 +35,7 @@ class ProductsPage:
 
     def add_all_products_to_cart(self):
         products = self.page.locator(".inventory_item")
+        expect(products.first).to_be_visible()
         names = []
 
         for i in range(products.count()):
@@ -43,6 +44,8 @@ class ProductsPage:
             print("Adding:", name)
             names.append(name)
             product.get_by_role("button", name="Add to cart").click()
+
+        expect(self.page.locator(".shopping_cart_badge")).to_have_text(str(len(names)))
 
         return names
 
