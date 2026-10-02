@@ -15,24 +15,35 @@ E-commerce UI automation framework built using **Python, Playwright, and Pytest*
 
 ## Project Structure
 
-* pages/
-
-  * login\_page.py
-  * product\_page.py
-  * cart\_page.py
-  * checkout\_page.py
-* tests/
-
-  * test\_login.py
-  * test\_products.py
-  * test\_cart.py
-  * test\_checkout.py
-* conftest.py
-* pytest.ini
-* requirements.txt
-* README.md
-
-
+ecommerce-playwright-automation/
+|
++-- api/
+|   +-- api_client.py
+|   +-- api_config.py
+|   +-- api_assertions.py
+|   +-- test_data.py
+|   +-- test_api.py
+|
++-- pages/
+|   +-- login_page.py
+|   +-- product_page.py
+|   +-- cart_page.py
+|   +-- checkout_page.py
+|
++-- tests/
+|   +-- test_login.py
+|   +-- test_products.py
+|   +-- test_cart.py
+|   +-- test_checkout.py
+|
++-- .github/
+|   +-- workflows/
+|       +-- playwright-tests.yml
+|
++-- conftest.py
++-- pytest.ini
++-- requirements.txt
++-- README.md
 
 ## Automated Test Coverage
 
@@ -225,35 +236,42 @@ API automation is implemented using Python, Pytest, and Requests with a reusable
 
 ###### API Framework Structure
 
-* api/
-* api\_client.py
-* api\_config.py
-* api\_assertions.py
-* test\_data.py
-* test\_api.py
-* API Test Execution
-
+api/
+|
++-- api_client.py
++-- api_config.py
++-- api_assertions.py
++-- test_data.py
++-- test_api.py
 
 
 Run all tests:
-
-
-
 pytest
 
 
-
 Run only API tests:
-
-
-
-pytest api/test\_api.py
-
+pytest api/test_api.py
 
 
 Run API tests with detailed output:
+pytest api/test_api.py -v -s
 
+## Continuous Integration
 
+The project uses **GitHub Actions** to automatically run the UI and API test suite.
 
-pytest api/test\_api.py -v -s
+The workflow is triggered when:
+
+- Code is pushed to the `main` branch
+- A pull request is created against the `main` branch
+
+The CI workflow:
+
+1. Checks out the repository
+2. Sets up Python
+3. Installs project dependencies
+4. Installs Playwright browsers
+5. Runs the complete Pytest test suite
+
+This helps verify that the automation framework works in a clean CI environment.
 
