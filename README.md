@@ -12,22 +12,26 @@ E-commerce UI automation framework built using **Python, Playwright, and Pytest*
 * **Page Object Model (POM)**
 
 
+
 ## Project Structure
 
-- pages/
-  - login_page.py
-  - product_page.py
-  - cart_page.py
-  - checkout_page.py
-- tests/
-  - test_login.py
-  - test_products.py
-  - test_cart.py
-  - test_checkout.py
-- conftest.py
-- pytest.ini
-- requirements.txt
-- README.md
+* pages/
+
+  * login\_page.py
+  * product\_page.py
+  * cart\_page.py
+  * checkout\_page.py
+* tests/
+
+  * test\_login.py
+  * test\_products.py
+  * test\_cart.py
+  * test\_checkout.py
+* conftest.py
+* pytest.ini
+* requirements.txt
+* README.md
+
 
 
 ## Automated Test Coverage
@@ -191,4 +195,65 @@ screenshots/
 ## Purpose
 
 This project demonstrates practical UI test automation using **Python, Playwright, Pytest, Page Object Model, test parametrization, synchronization, assertions, reporting, and failure diagnostics**.
+
+
+
+
+
+## API Automation
+
+
+
+API automation is implemented using Python, Pytest, and Requests with a reusable API client and assertion utilities.
+
+
+
+###### API Coverage
+
+* GET all users
+* GET user by ID
+* POST create user
+* PUT update user
+* DELETE user
+* Negative testing for non-existing users
+* Parametrized API tests
+* Response status and header validation
+* Response field validation
+* Environment-based API configuration
+
+
+
+###### API Framework Structure
+
+* api/
+* api\_client.py
+* api\_config.py
+* api\_assertions.py
+* test\_data.py
+* test\_api.py
+* API Test Execution
+
+
+
+Run all tests:
+
+
+
+pytest
+
+
+
+Run only API tests:
+
+
+
+pytest api/test\_api.py
+
+
+
+Run API tests with detailed output:
+
+
+
+pytest api/test\_api.py -v -s
 

@@ -1,11 +1,12 @@
-from api.api_assertions import assert_status_code, assert_field_exists
+import pytest
+from api.api_assertions import assert_field_exists, assert_field_value, validate_response
 from api.test_data import CREATE_USER_PAYLOAD, UPDATE_USER_PAYLOAD
 
 
 def test_get_users(api_client):
     response = api_client.get("/users")
 
-    assert_status_code(response, 200)
+    validate_response(response, 200)
 
     users = response.json()
 
@@ -25,32 +26,45 @@ def test_create_user(api_client):
 
     response = api_client.post("/users", CREATE_USER_PAYLOAD)
 
-    assert_status_code(response, 201)
+    validate_response(response, 201)
 
     created_user = response.json()
 
-    assert created_user["name"] == "Swapnil"
-    assert created_user["username"] == "swapnil123"
-    assert created_user["email"] == "swapnil@example.com"
+    assert_field_value(created_user, "name", CREATE_USER_PAYLOAD["name"])
+    assert_field_value(created_user, "username", CREATE_USER_PAYLOAD["username"])
+    assert_field_value(created_user, "email", CREATE_USER_PAYLOAD["email"])
 
-def test_get_non_existing_user(api_client):
-    response = api_client.get("/users/9999")
+@pytest.mark.parametrize("user_id", [9999, 10000, 10001])   
+def test_get_non_existing_user(api_client,user_id):
+    response = api_client.get(f"/users/{user_id}")
 
-    assert_status_code(response, 404)
+    validate_response(response, 404)
 
 def test_update_user(api_client):
 
     response = api_client.put("/users/1", UPDATE_USER_PAYLOAD)
 
-    assert_status_code(response, 200)
+    validate_response(response, 200)
 
     updated_user = response.json()
 
-    assert updated_user["name"] == "Swapnil Updated"
-    assert updated_user["username"] == "swapnil_updated"
-    assert updated_user["email"] == "swapnil.updated@example.com"
+    assert_field_value(updated_user, "name", UPDATE_USER_PAYLOAD["name"])
+    assert_field_value(updated_user, "username", UPDATE_USER_PAYLOAD["username"])
+    assert_field_value(updated_user, "email", UPDATE_USER_PAYLOAD["email"])
 
 
 def test_delete_user(api_client):
     response = api_client.delete("/users/1")
-    assert_status_code(response, 200)
+    validate_response(response, 200)
+
+def test_get_user_by_id(api_client):
+    response = api_client.get("/users/1")
+
+    validate_response(response, 200)
+
+    user = response.json()
+
+    assert_field_value(user, "id", 1)
+    assert_field_value(user, "name", "Leanne Graham")
+    assert_field_value(user, "username", "Bret")
+    assert_field_value(user, "email", "Sincere@april.biz")
