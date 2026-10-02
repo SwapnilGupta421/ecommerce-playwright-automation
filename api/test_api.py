@@ -1,6 +1,5 @@
-import requests
-from api.api_config import BASE_URL
-from api.api_assertions import assert_status_code
+from api.api_assertions import assert_status_code, assert_field_exists
+from api.test_data import CREATE_USER_PAYLOAD, UPDATE_USER_PAYLOAD
 
 
 def test_get_users(api_client):
@@ -15,14 +14,16 @@ def test_get_users(api_client):
     assert users[0]["name"] == "Leanne Graham"
     assert users[0]["username"] == "Bret"
 
-def test_create_user(api_client):
-    payload = {
-        "name": "Swapnil",
-        "username": "swapnil123",
-        "email": "swapnil@example.com"
-    }
+    first_user = users[0]
+    assert_field_exists(first_user, "id")
+    assert_field_exists(first_user, "name")
+    assert_field_exists(first_user, "username")
+    assert_field_exists(first_user, "email")
 
-    response = api_client.post("/users", payload)
+
+def test_create_user(api_client):
+
+    response = api_client.post("/users", CREATE_USER_PAYLOAD)
 
     assert_status_code(response, 201)
 
@@ -38,13 +39,8 @@ def test_get_non_existing_user(api_client):
     assert_status_code(response, 404)
 
 def test_update_user(api_client):
-    payload = {
-        "name": "Swapnil Updated",
-        "username": "swapnil_updated",
-        "email": "swapnil.updated@example.com"
-    }
 
-    response = api_client.put("/users/1", payload)
+    response = api_client.put("/users/1", UPDATE_USER_PAYLOAD)
 
     assert_status_code(response, 200)
 

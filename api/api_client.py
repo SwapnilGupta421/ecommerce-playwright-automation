@@ -7,25 +7,30 @@ class APIClient:
 
     def __init__(self):
         self.base_url = BASE_URL
+        self.session = requests.Session()
+        self.session.headers.update({
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                    })
 
     def get(self, endpoint):
-        return requests.get(
+        return self.session.get(
             f"{self.base_url}{endpoint}",timeout=10
         )
 
     def post(self, endpoint, payload):
-        return requests.post(
+        return self.session.post(
             f"{self.base_url}{endpoint}",
             json=payload,
             timeout=10
         )
 
     def put(self, endpoint, payload):
-        return requests.put(
+        return self.session.put(
         f"{self.base_url}{endpoint}",
         json=payload,
         timeout=10
     )
 
     def delete(self, endpoint):
-        return requests.delete(f"{self.base_url}{endpoint}",timeout=10)
+        return self.session.delete(f"{self.base_url}{endpoint}",timeout=10)
