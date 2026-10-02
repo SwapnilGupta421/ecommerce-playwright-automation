@@ -9,6 +9,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    
+    env:
+      API_BASE_URL: https://jsonplaceholder.typicode.com
 
     steps:
       - name: Checkout repository
