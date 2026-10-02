@@ -1,3 +1,4 @@
+
 import pytest
 from pathlib import Path
 from pages.login_page import LoginPage
@@ -8,9 +9,14 @@ from api.api_client import APIClient
 def login_page(page):
     return LoginPage(page)
 
+@pytest.fixture(autouse=True)
+def clear_browser_state(context):
+    context.clear_cookies()
+
 @pytest.fixture
 def api_client():
     return APIClient()
+
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):
